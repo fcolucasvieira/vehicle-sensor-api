@@ -13,3 +13,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+
+mqtt:
+  broker: ${MQTT_HOST}
+  username: ${MQTT_USER}
+  password: ${MQTT_PASSWORD}
+  client-id: vehicle-sensor-api
+  topic: lab/+/veiculos
