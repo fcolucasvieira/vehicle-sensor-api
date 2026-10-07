@@ -1,13 +1,20 @@
 package com.fcolucasvieira.vehicle_sensor_api.mqtt;
 
+import com.fcolucasvieira.vehicle_sensor_api.dto.MQTTResponse;
+import com.fcolucasvieira.vehicle_sensor_api.usecase.ProcessDetectionUseCase;
+import lombok.RequiredArgsConstructor;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Component;
+import tools.jackson.databind.ObjectMapper;
 
 import java.nio.charset.StandardCharsets;
 
 @Component
+@RequiredArgsConstructor
 public class MqttMessageHandler {
+    private final ObjectMapper objectMapper;
+    private final ProcessDetectionUseCase useCase;
 
     @ServiceActivator(inputChannel = "mqttInputChannel")
     public void handle(Message<?> message) {
@@ -16,11 +23,18 @@ public class MqttMessageHandler {
                 StandardCharsets.UTF_8
         );
 
-        System.out.println("=================================");
-        System.out.println("Mensagem MQTT recebida!");
-        System.out.println("Tópico: " +
-                message.getHeaders().get("mqtt_receivedTopic"));
-        System.out.println("Payload: " + payload);
-        System.out.println("=================================");
+        String topic = (String) message.getHeaders()
+                .get("mqtt_receivedTopic");
+
+        try {
+            MQTTResponse response = objectMapper.readValue(
+                    payload,
+                    MQTTResponse.class
+            );
+
+            useCase.execute(topic, response);
+        } catch (Exception ex) {
+            System.err.println("Error processing MQTT message: " + ex.getMessage());
+        }
     }
 }

@@ -41,7 +41,7 @@ public class ProcessDetectionUseCase {
     private String extractDevice(String topic) {
         String[] parts = topic.split("/");
 
-        if (parts.length != 3 || parts[2].equals("veiculos"))
+        if (parts.length != 3 || !parts[2].equals("veiculos"))
             throw new IllegalArgumentException("Invalid MQTT topic: " + topic);
 
         return parts[1];
