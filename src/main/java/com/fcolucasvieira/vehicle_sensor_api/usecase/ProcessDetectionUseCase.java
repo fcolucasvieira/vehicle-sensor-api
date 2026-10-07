@@ -1,9 +1,14 @@
 package com.fcolucasvieira.vehicle_sensor_api.usecase;
 
+import com.fcolucasvieira.vehicle_sensor_api.dto.MQTTResponse;
+import com.fcolucasvieira.vehicle_sensor_api.entity.Detection;
+import com.fcolucasvieira.vehicle_sensor_api.entity.Direction;
+import com.fcolucasvieira.vehicle_sensor_api.entity.Vehicle;
 import com.fcolucasvieira.vehicle_sensor_api.repository.DetectionRepository;
-import org.springframework.integration.annotation.ServiceActivator;
-import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.Instant;
 
 @Service
 public class ProcessDetectionUseCase {
@@ -13,6 +18,32 @@ public class ProcessDetectionUseCase {
         this.repository = repository;
     }
 
-    @ServiceActivator(inputChannel = "mqttInputChannel")
-    public void execute(Message<?> message) {}
+    public void execute(String topic, MQTTResponse response) {
+        String device = extractDevice(topic);
+
+        Vehicle vehicle = Vehicle.from(response.classe());
+
+        Direction direction = Direction.from(response.sentido());
+
+        BigDecimal confidence = new BigDecimal(response.precisao());
+
+        Detection detection = new Detection(
+                device,
+                vehicle,
+                direction,
+                confidence,
+                Instant.now()
+        );
+
+        repository.save(detection);
+    }
+
+    private String extractDevice(String topic) {
+        String[] parts = topic.split("/");
+
+        if (parts.length != 3 || parts[2].equals("veiculos"))
+            throw new IllegalArgumentException("Invalid MQTT topic: " + topic);
+
+        return parts[1];
+    }
 }
