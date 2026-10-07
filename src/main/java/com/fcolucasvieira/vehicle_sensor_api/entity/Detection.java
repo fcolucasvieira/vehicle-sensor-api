@@ -26,11 +26,19 @@ public class Detection {
     @Column(nullable = false)
     private Direction direction;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 5, scale = 4)
     private BigDecimal confidence;
 
     @Column(name = "received_at", nullable = false)
     private Instant receivedAt;
 
     protected Detection() {}
+
+    public Detection(String device, Vehicle vehicle, Direction direction, BigDecimal confidence, Instant receivedAt) {
+        this.device = device;
+        this.vehicle = vehicle;
+        this.direction = direction;
+        this.confidence = confidence;
+        this.receivedAt = receivedAt;
+    }
 }
