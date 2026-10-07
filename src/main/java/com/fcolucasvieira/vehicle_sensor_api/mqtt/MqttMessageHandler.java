@@ -1,6 +1,6 @@
 package com.fcolucasvieira.vehicle_sensor_api.mqtt;
 
-import com.fcolucasvieira.vehicle_sensor_api.dto.MQTTResponse;
+import com.fcolucasvieira.vehicle_sensor_api.dto.MqttResponse;
 import com.fcolucasvieira.vehicle_sensor_api.usecase.ProcessDetectionUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -27,9 +27,9 @@ public class MqttMessageHandler {
                 .get("mqtt_receivedTopic");
 
         try {
-            MQTTResponse response = objectMapper.readValue(
+            MqttResponse response = objectMapper.readValue(
                     payload,
-                    MQTTResponse.class
+                    MqttResponse.class
             );
 
             useCase.execute(topic, response);

@@ -1,6 +1,6 @@
 package com.fcolucasvieira.vehicle_sensor_api.usecase;
 
-import com.fcolucasvieira.vehicle_sensor_api.dto.MQTTResponse;
+import com.fcolucasvieira.vehicle_sensor_api.dto.MqttResponse;
 import com.fcolucasvieira.vehicle_sensor_api.entity.Detection;
 import com.fcolucasvieira.vehicle_sensor_api.entity.Direction;
 import com.fcolucasvieira.vehicle_sensor_api.entity.Vehicle;
@@ -18,7 +18,7 @@ public class ProcessDetectionUseCase {
         this.repository = repository;
     }
 
-    public void execute(String topic, MQTTResponse response) {
+    public void execute(String topic, MqttResponse response) {
         String device = extractDevice(topic);
 
         Vehicle vehicle = Vehicle.from(response.classe());
