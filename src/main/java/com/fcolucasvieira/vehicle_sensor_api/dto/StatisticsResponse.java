@@ -8,7 +8,7 @@ public record StatisticsResponse(
         BigDecimal averageConfidence,
         RecentDetectionResponse lastDetection,
         List<VehicleCountResponse> vehicleClasses,
-        List<DirectionCountResponse> directions,
+        List<DirectionCountResponse> directionsFlow,
         List<RecentDetectionResponse> recentDetections
 ) {
 }

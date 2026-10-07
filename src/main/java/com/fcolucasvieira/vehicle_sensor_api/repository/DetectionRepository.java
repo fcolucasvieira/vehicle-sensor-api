@@ -1,8 +1,6 @@
 package com.fcolucasvieira.vehicle_sensor_api.repository;
 
 import com.fcolucasvieira.vehicle_sensor_api.entity.Detection;
-import com.fcolucasvieira.vehicle_sensor_api.entity.Direction;
-import com.fcolucasvieira.vehicle_sensor_api.entity.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -28,7 +26,7 @@ public interface DetectionRepository extends JpaRepository<Detection, UUID> {
     Optional<Detection> findLastDetection();
 
     @Query(value = """
-            SELECT vehicle, COUNT(*) AS count
+            SELECT vehicle, COUNT(*) AS vehicle_count
             FROM detections
             GROUP BY vehicle
             ORDER BY vehicle
@@ -36,7 +34,7 @@ public interface DetectionRepository extends JpaRepository<Detection, UUID> {
     List<VehicleCountProjection> countByVehicle();
 
     @Query(value = """
-            SELECT direction, COUNT(*) AS count
+            SELECT direction, COUNT(*) AS direction_count
             FROM detections
             GROUP BY direction
             ORDER BY direction
@@ -52,12 +50,12 @@ public interface DetectionRepository extends JpaRepository<Detection, UUID> {
     List<Detection> findRecentDetections();
 
     interface VehicleCountProjection {
-        Vehicle getVehicle();
-        Long getCount();
+        String getVehicle();
+        Long getVehicleCount();
     }
 
     interface DirectionCountProjection {
-        Direction getDirection();
-        Long getCount();
+        String getDirection();
+        Long getDirectionCount();
     }
 }
