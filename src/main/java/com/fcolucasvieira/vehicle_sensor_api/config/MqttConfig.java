@@ -15,19 +15,14 @@ import java.nio.charset.StandardCharsets;
 @Configuration
 @EnableIntegration
 public class MqttConfig {
-
     @Value("${mqtt.broker}")
     private String broker;
-
     @Value("${mqtt.username}")
     private String username;
-
     @Value("${mqtt.password}")
     private String password;
-
     @Value("${mqtt.client-id}")
     private String clientId;
-
     @Value("${mqtt.topic}")
     private String topic;
 
@@ -51,9 +46,7 @@ public class MqttConfig {
     }
 
     @Bean
-    public MessageProducer mqttInbound(
-            MqttConnectionOptions mqttConnectionOptions
-    ) {
+    public MessageProducer mqttInbound(MqttConnectionOptions mqttConnectionOptions) {
         var adapter = new Mqttv5PahoMessageDrivenChannelAdapter(
                 mqttConnectionOptions,
                 clientId,
