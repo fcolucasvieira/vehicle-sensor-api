@@ -1,0 +1,23 @@
+const VEH={MOTO:["Moto","#20a9d8","🏍️"],CARRO:["Carro","#f1b51d","🚗"],CAMINHAO:["Caminhão","#22bd68","🚚"],ONIBUS:["Ônibus","#9a58e8","🚌"]};
+const DIR={ENTRANDO:"Entrando",SAINDO:"Saindo"};
+let vc,dc;
+
+document.addEventListener("DOMContentLoaded",async()=>{await load();connect()});
+
+async function load(){try{const r=await fetch("/api/detections/statistics");if(!r.ok)throw Error(r.status);render(await r.json())}catch(e){console.error(e);document.querySelector("#table").innerHTML='<tr><td colspan="5">Não foi possível carregar os dados.</td></tr>'}}
+
+function connect(){const socket=new SockJS("/ws");const c=new StompJs.Client({webSocketFactory:()=>socket,reconnectDelay:3000,debug:()=>{},onConnect(){status(true);c.subscribe("/topic/statistics",m=>render(JSON.parse(m.body)))},onDisconnect(){status(false)},onStompError(e){console.error(e);status(false)},onWebSocketError(e){console.error(e);status(false)}});c.activate()}
+
+function status(on){document.querySelector("#headerDot").classList.toggle("online",on);document.querySelector("#sideDot").classList.toggle("online",on);document.querySelector("#headerStatus").textContent=on?"Conectado":"Reconectando";document.querySelector("#sideStatus").textContent=on?"recebendo dados em tempo real":"tentando reconectar"}
+
+function render(d){document.querySelector("#trafficVolume").textContent=d.trafficVolume??0;const avg=Number(d.averageConfidence??0)*100;document.querySelector("#averageConfidence").textContent=avg.toFixed(1)+"%";document.querySelector("#confidenceBar").style.width=Math.min(100,Math.max(0,avg))+"%";if(d.lastDetection){document.querySelector("#lastDetection").textContent=time(d.lastDetection.receivedAt);const v=VEH[d.lastDetection.vehicle]?.[0]||d.lastDetection.vehicle;document.querySelector("#lastMeta").textContent=v+" · "+(DIR[d.lastDetection.direction]||d.lastDetection.direction)}else{document.querySelector("#lastDetection").textContent="—";document.querySelector("#lastMeta").textContent="Aguardando dados..."}vehicleChart(d.vehicleClasses||[]);directionChart(d.directionsFlow||[]);feed(d.recentDetections||[])}
+
+function vehicleChart(data){if(vc)vc.destroy();const labels=data.map(x=>VEH[x.vehicle]?.[0]||x.vehicle),vals=data.map(x=>x.count),colors=data.map(x=>VEH[x.vehicle]?.[1]||"#82939a");document.querySelector("#vehicleTotal").textContent=vals.reduce((a,b)=>a+b,0);vc=new Chart(document.querySelector("#vehicleChart"),{type:"doughnut",data:{labels,datasets:[{data:vals,backgroundColor:colors,borderWidth:0,hoverOffset:5}]},options:{responsive:true,maintainAspectRatio:false,cutout:"70%",plugins:{legend:{display:false}}}});document.querySelector("#legend").innerHTML=data.map((x,i)=>`<div class="legend-row"><span class="legend-dot" style="background:${colors[i]}"></span><span>${labels[i]}</span><b>${x.count}</b></div>`).join("")}
+
+function directionChart(data){if(dc)dc.destroy();const en=data.find(x=>x.direction==="ENTRANDO")?.count||0,ou=data.find(x=>x.direction==="SAINDO")?.count||0;document.querySelector("#entering").textContent=en;document.querySelector("#leaving").textContent=ou;dc=new Chart(document.querySelector("#directionChart"),{type:"bar",data:{labels:data.map(x=>DIR[x.direction]||x.direction),datasets:[{data:data.map(x=>x.count),backgroundColor:["#20a9d8","#9a58e8"],borderRadius:5,barPercentage:.55}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0},grid:{color:"#e7edef"}},x:{grid:{display:false}}}}})}
+
+function feed(rows){document.querySelector("#feedCount").textContent=`${rows.length} ${rows.length===1?"evento":"eventos"}`;const t=document.querySelector("#table");if(!rows.length){t.innerHTML='<tr><td colspan="5">Nenhuma detecção registrada.</td></tr>';return}t.innerHTML=rows.map(x=>{const v=VEH[x.vehicle],p=Number(x.confidence)*100;return `<tr><td class="time">${time(x.receivedAt)}</td><td class="device">${safe(x.device)}</td><td><span class="vehicle ${cls(x.vehicle)}">${v?.[2]||"🚘"} ${v?.[0]||x.vehicle}</span></td><td class="${x.direction==="ENTRANDO"?"in":"out"}">${DIR[x.direction]||safe(x.direction)}</td><td class="conf ${p>=90?"high":p>=75?"medium":"low"}">${p.toFixed(1)}%</td></tr>`}).join("")}
+
+function time(v){return new Date(v).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit",second:"2-digit"})}
+function cls(v){return{CARRO:"car",MOTO:"moto",ONIBUS:"bus",CAMINHAO:"truck"}[v]||""}
+function safe(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}

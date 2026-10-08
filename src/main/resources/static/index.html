@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lab Smart Sensing | Monitoramento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7/bundles/stomp.umd.min.js"></script>
+</head>
+<body>
+<div class="shell">
+    <aside>
+        <div class="brand"><div class="mark"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div><b>SMART<br>SENSING</b><small>vehicle lab</small></div></div>
+        <small class="label">MONITORAMENTO</small>
+        <a class="active">⌁ <span>Visão geral</span></a>
+        <a class="disabled">◫ <span>Histórico</span><em>em breve</em></a>
+        <div class="side-bottom"><div class="stream"><span id="sideDot"></span><div><b>Sensor stream</b><small id="sideStatus">Conectando...</small></div></div><small>MVP · v1.0</small></div>
+    </aside>
+
+    <main>
+        <header>
+            <div><p class="eyebrow">LAB SMART SENSING / REAL-TIME</p><h1>Monitoramento de tráfego</h1><p class="sub">Detecções recebidas pelos sensores em tempo real.</p></div>
+            <div class="connection"><span id="headerDot"></span><div><b id="headerStatus">Conectando</b><small>MQTT → WebSocket</small></div></div>
+        </header>
+
+        <section class="kpis">
+            <article class="kpi hero"><span>DETECÇÕES</span><b id="trafficVolume">—</b><p>veículos identificados na coleta</p></article>
+            <article class="kpi"><span>PRECISÃO MÉDIA</span><b id="averageConfidence">—</b><div class="track"><i id="confidenceBar"></i></div></article>
+            <article class="kpi"><span>ÚLTIMA DETECÇÃO</span><b id="lastDetection">—</b><p id="lastMeta">Aguardando dados...</p></article>
+        </section>
+
+        <section class="grid">
+            <article class="panel">
+                <div class="heading"><div><small>DISTRIBUIÇÃO</small><h2>Classes detectadas</h2></div><label>LIVE</label></div>
+                <div class="vehicle-layout"><div class="donut"><canvas id="vehicleChart"></canvas><div><b id="vehicleTotal">0</b><small>total</small></div></div><div id="legend" class="legend"></div></div>
+            </article>
+
+            <article class="panel">
+                <div class="heading"><div><small>DIREÇÃO</small><h2>Fluxo de veículos</h2></div></div>
+                <div class="direction-cards"><div><span class="enter">↓</span><div><small>Entrando</small><b id="entering">0</b></div></div><div><span class="leave">↑</span><div><small>Saindo</small><b id="leaving">0</b></div></div></div>
+                <div class="bar"><canvas id="directionChart"></canvas></div>
+            </article>
+        </section>
+
+        <section class="panel feed">
+            <div class="feed-head"><div><small>STREAM DE EVENTOS</small><h2>Detecções recentes</h2></div><label id="feedCount">0 eventos</label></div>
+            <div class="table-wrap"><table><thead><tr><th>HORÁRIO</th><th>DISPOSITIVO</th><th>VEÍCULO</th><th>SENTIDO</th><th>CONFIANÇA</th></tr></thead><tbody id="table"><tr><td colspan="5">Carregando eventos...</td></tr></tbody></table></div>
+        </section>
+    </main></div>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>

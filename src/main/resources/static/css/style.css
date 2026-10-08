@@ -1,0 +1,666 @@
+* {
+    box-sizing: border-box
+}
+
+:root {
+    --bg: #f2f5f6;
+    --surface: #fff;
+    --ink: #14242a;
+    --muted: #718188;
+    --line: #e1e8eb;
+    --navy: #0d2932;
+    --navy2: #174750;
+    --green: #00b77a;
+    --cyan: #20a9d8;
+    --amber: #f1b51d;
+    --violet: #9a58e8;
+    --red: #e45c67;
+    --shadow: 0 12px 34px rgba(20, 45, 53, .065)
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Inter, Arial, sans-serif
+}
+
+.shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns:248px 1fr
+}
+
+aside {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: 248px;
+    padding: 28px 18px;
+    background: linear-gradient(180deg, var(--navy), #102f38);
+    color: #dce8eb;
+    display: flex;
+    flex-direction: column
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 9px 36px
+}
+
+.brand b {
+    font-size: 15px;
+    line-height: 1.03;
+    letter-spacing: 1px
+}
+
+.brand small {
+    display: block;
+    margin-top: 7px;
+    color: #78949b;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase
+}
+
+.mark {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    grid-template-columns:repeat(3, 6px);
+    gap: 3px;
+    place-content: center;
+    border: 1px solid #007d5a;
+    border-radius: 10px
+}
+
+.mark i {
+    height: 6px;
+    border-radius: 2px;
+    background: var(--green)
+}
+
+.label {
+    padding: 0 12px 10px;
+    color: #66828a;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    font-weight: 800
+}
+
+aside a {
+    height: 44px;
+    margin: 3px 0;
+    padding: 0 13px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #a9bdc2;
+    font-size: 13px;
+    font-weight: 600;
+    position: relative
+}
+
+aside a.active {
+    color: #fff;
+    background: #ffffff0d
+}
+
+aside a.active:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 3px;
+    height: 20px;
+    border-radius: 0 4px 4px 0;
+    background: var(--green)
+}
+
+aside a.disabled {
+    opacity: .6
+}
+
+aside em {
+    margin-left: auto;
+    font-size: 8px;
+    color: #6f8b92;
+    font-style: normal
+}
+
+.side-bottom {
+    margin-top: auto
+}
+
+.stream {
+    display: flex;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid #ffffff12;
+    border-radius: 9px;
+    background: #ffffff08
+}
+
+.stream > span {
+    width: 8px;
+    height: 8px;
+    margin-top: 3px;
+    border-radius: 50%;
+    background: #e45c67
+}
+
+.stream > span.online {
+    background: var(--green);
+    box-shadow: 0 0 0 5px #00b77a14
+}
+
+.stream b {
+    display: block;
+    font-size: 10px
+}
+
+.stream small {
+    display: block;
+    margin-top: 3px;
+    color: #78949b;
+    font-size: 9px
+}
+
+.side-bottom > small {
+    display: block;
+    margin-top: 12px;
+    color: #59737b;
+    font-size: 9px
+}
+
+main {
+    grid-column: 2;
+    padding: 36px 42px 50px;
+    max-width: 1420px;
+    width: 100%
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 30px
+}
+
+.eyebrow, .heading > div > small, .feed-head > div > small {
+    margin: 0;
+    color: var(--green);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.6px
+}
+
+h1 {
+    margin: 7px 0 6px;
+    font-size: 32px;
+    letter-spacing: -1px
+}
+
+.sub {
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px
+}
+
+.connection {
+    min-width: 205px;
+    height: 55px;
+    padding: 11px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #ffffffaa
+}
+
+.connection > span {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #e45c67
+}
+
+.connection > span.online {
+    background: var(--green);
+    box-shadow: 0 0 0 5px #00b77a14
+}
+
+.connection b, .connection small {
+    display: block
+}
+
+.connection b {
+    font-size: 11px
+}
+
+.connection small {
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 9px
+}
+
+.kpis {
+    display: grid;
+    grid-template-columns:1.15fr 1fr 1fr;
+    gap: 17px
+}
+
+.kpi, .panel {
+    background: var(--surface);
+    border: 1px solid #dfe7e9aa;
+    box-shadow: var(--shadow);
+    border-radius: 12px
+}
+
+.kpi {
+    min-height: 145px;
+    padding: 22px
+}
+
+.kpi > span {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    color: #75848a
+}
+
+.kpi > b {
+    display: block;
+    margin-top: 14px;
+    font-size: 34px;
+    line-height: 1;
+    letter-spacing: -1px
+}
+
+.kpi p {
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-size: 10px
+}
+
+.kpi.hero {
+    color: #fff;
+    border: 0;
+    background: linear-gradient(135deg, #123a43, #18515b)
+}
+
+.kpi.hero > span {
+    color: #a9c2c8
+}
+
+.kpi.hero p {
+    color: #a9c2c8
+}
+
+.track {
+    height: 5px;
+    margin-top: 15px;
+    border-radius: 99px;
+    background: #e8eef0;
+    overflow: hidden
+}
+
+.track i {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: var(--green);
+    transition: .5s
+}
+
+.grid {
+    display: grid;
+    grid-template-columns:1.05fr 1fr;
+    gap: 17px;
+    margin-top: 17px
+}
+
+.panel {
+    padding: 23px
+}
+
+.heading, .feed-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start
+}
+
+.heading h2, .feed-head h2 {
+    margin: 5px 0 0;
+    font-size: 15px
+}
+
+.heading label {
+    padding: 5px 8px;
+    border-radius: 5px;
+    background: #e5f7f0;
+    color: var(--green);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1px
+}
+
+.vehicle-layout {
+    height: 275px;
+    display: grid;
+    grid-template-columns:1.1fr .9fr;
+    align-items: center
+}
+
+.donut {
+    height: 245px;
+    position: relative
+}
+
+.donut > div {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none
+}
+
+.donut > div b {
+    font-size: 29px
+}
+
+.donut > div small {
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px
+}
+
+.legend {
+    display: flex;
+    flex-direction: column;
+    gap: 13px
+}
+
+.legend-row {
+    display: grid;
+    grid-template-columns:8px 1fr auto;
+    gap: 8px;
+    align-items: center;
+    font-size: 11px
+}
+
+.legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px
+}
+
+.legend-row span:nth-child(2) {
+    color: var(--muted)
+}
+
+.direction-cards {
+    display: grid;
+    grid-template-columns:1fr 1fr;
+    gap: 12px;
+    margin: 24px 0 12px
+}
+
+.direction-cards > div {
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 9px;
+    background: #f7f9fa
+}
+
+.direction-cards span {
+    width: 31px;
+    height: 31px;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: 800
+}
+
+.enter {
+    color: var(--cyan);
+    background: #e3f6fc
+}
+
+.leave {
+    color: var(--violet);
+    background: #f0e7fc
+}
+
+.direction-cards small, .direction-cards b {
+    display: block
+}
+
+.direction-cards small {
+    color: var(--muted);
+    font-size: 9px
+}
+
+.direction-cards b {
+    margin-top: 2px;
+    font-size: 17px
+}
+
+.bar {
+    height: 190px
+}
+
+.feed {
+    margin-top: 17px;
+    padding: 23px 0 0;
+    overflow: hidden
+}
+
+.feed-head {
+    padding: 0 23px 18px
+}
+
+.feed-head > label {
+    padding: 5px 8px;
+    border-radius: 5px;
+    background: #f7f9fa;
+    color: var(--muted);
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1px
+}
+
+.table-wrap {
+    max-height: 430px;
+    overflow: auto
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px
+}
+
+thead {
+    position: sticky;
+    top: 0;
+    background: #f8fafb
+}
+
+th {
+    padding: 11px 16px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    color: #87959a;
+    font-size: 8px;
+    letter-spacing: 1px
+}
+
+td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #edf1f2
+}
+
+.time {
+    color: #65757b;
+    font-weight: 700
+}
+
+.device {
+    color: #516268;
+    font-weight: 600
+}
+
+.vehicle {
+    display: inline-flex;
+    padding: 5px 8px;
+    border-radius: 6px;
+    font-size: 9px;
+    font-weight: 800
+}
+
+.car {
+    color: #1872bf;
+    background: #e1f2ff
+}
+
+.moto {
+    color: #a96c00;
+    background: #fff0d2
+}
+
+.bus {
+    color: #7a38bf;
+    background: #eee1fb
+}
+
+.truck {
+    color: #16824f;
+    background: #e0f5e9
+}
+
+.in {
+    color: #138bb5;
+    font-weight: 700
+}
+
+.out {
+    color: #8752c2;
+    font-weight: 700
+}
+
+.conf {
+    font-weight: 800
+}
+
+.high {
+    color: #008b5b
+}
+
+.medium {
+    color: #d39700
+}
+
+.low {
+    color: #d24a55
+}
+
+td[colspan] {
+    padding: 35px;
+    text-align: center;
+    color: var(--muted)
+}
+
+@media (max-width: 1050px) {
+    .shell {
+        grid-template-columns:76px 1fr
+    }
+
+    aside {
+        width: 76px;
+        padding: 25px 10px
+    }
+
+    .brand {
+        justify-content: center;
+        padding: 0 0 30px
+    }
+
+    .brand > div:last-child, .label, aside a span, aside a em, .side-bottom {
+        display: none
+    }
+
+    aside a {
+        justify-content: center;
+        padding: 0
+    }
+
+    main {
+        padding: 28px
+    }
+
+    .kpis, .grid {
+        grid-template-columns:1fr 1fr
+    }
+
+    .kpi:first-child {
+        grid-column: 1/-1
+    }
+}
+
+@media (max-width: 760px) {
+    .shell {
+        display: block
+    }
+
+    aside {
+        display: none
+    }
+
+    main {
+        padding: 22px 14px
+    }
+
+    .kpis, .grid {
+        grid-template-columns:1fr
+    }
+
+    header {
+        flex-direction: column
+    }
+
+    .connection {
+        width: 100%
+    }
+
+    .vehicle-layout {
+        grid-template-columns:1fr;
+        height: auto
+    }
+
+    .legend {
+        padding: 5px 15px 18px
+    }
+
+    .panel {
+        padding: 18px 14px
+    }
+
+    .feed {
+        padding-top: 18px
+    }
+
+    .feed-head {
+        padding: 0 14px 15px
+    }
+}
